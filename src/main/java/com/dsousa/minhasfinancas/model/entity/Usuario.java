@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table( name = "usuario" , schema = "financas")
@@ -37,5 +38,8 @@ public class Usuario {
 	@JsonIgnore
 	private String senha;
 
+	public void criptografarSenha() {
+		this.senha = new BCryptPasswordEncoder().encode(this.senha);
+	}
 
 }
