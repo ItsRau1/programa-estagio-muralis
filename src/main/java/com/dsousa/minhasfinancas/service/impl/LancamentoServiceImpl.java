@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
@@ -19,13 +20,10 @@ import com.dsousa.minhasfinancas.model.repository.LancamentoRepository;
 import com.dsousa.minhasfinancas.service.LancamentoService;
 
 @Service
+@RequiredArgsConstructor
 public class LancamentoServiceImpl implements LancamentoService {
 	
-	private LancamentoRepository repository;
-	
-	public LancamentoServiceImpl(LancamentoRepository repository) {
-		this.repository = repository;
-	}
+	private final LancamentoRepository repository;
 
 	@Override
 	@Transactional
@@ -53,7 +51,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Lancamento> buscar(Lancamento lancamentoFiltro) {
-		Example example = Example.of( lancamentoFiltro, 
+		Example<Lancamento> example = Example.of( lancamentoFiltro,
 				ExampleMatcher.matching()
 					.withIgnoreCase()
 					.withStringMatcher(StringMatcher.CONTAINING) );
@@ -70,7 +68,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	public void validar(Lancamento lancamento) {
 		
-		if(lancamento.getDescricao() == null || lancamento.getDescricao().trim().equals("")) {
+		if(lancamento.getDescricao() == null || lancamento.getDescricao().trim().isEmpty()) {
 			throw new RegraNegocioException("Informe uma Descrição válida.");
 		}
 		

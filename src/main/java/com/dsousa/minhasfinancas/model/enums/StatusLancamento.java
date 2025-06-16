@@ -1,8 +1,18 @@
 package com.dsousa.minhasfinancas.model.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusLancamento {
 
-	PENDENTE,
-	CANCELADO,
-	EFETIVADO
+	PENDENTE("PENDENTE"),
+	CANCELADO("CANCELADO"),
+	EFETIVADO("EFETIVADO");
+
+	private final String descricao;
+
+	private StatusLancamento(String descricao) {
+		this.descricao = descricao;
+	}
+
 }
