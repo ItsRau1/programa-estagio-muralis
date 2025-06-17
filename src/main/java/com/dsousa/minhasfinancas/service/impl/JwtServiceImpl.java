@@ -32,21 +32,17 @@ public class JwtServiceImpl implements JwtService {
 		LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
 		Instant instant = dataHoraExpiracao.atZone( ZoneId.systemDefault() ).toInstant();
 		java.util.Date data = Date.from(instant);
-		
 		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime()
 				.format(DateTimeFormatter.ofPattern("HH:mm"));
-		
-		String token = Jwts
-							.builder()
-							.setExpiration(data)
-							.setSubject(usuario.getEmail())
-							.claim("userid", usuario.getId())
-							.claim("nome", usuario.getNome())
-							.claim("horaExpiracao", horaExpiracaoToken)
-							.signWith( SignatureAlgorithm.HS512 , chaveAssinatura )
-							.compact();
-		
-		return token;
+        return Jwts
+                            .builder()
+                            .setExpiration(data)
+                            .setSubject(usuario.getEmail())
+                            .claim("userid", usuario.getId())
+                            .claim("nome", usuario.getNome())
+                            .claim("horaExpiracao", horaExpiracaoToken)
+                            .signWith( SignatureAlgorithm.HS512 , chaveAssinatura )
+                            .compact();
 	}
 
 	@Override

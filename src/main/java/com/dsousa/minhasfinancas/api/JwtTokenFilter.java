@@ -20,8 +20,8 @@ import com.dsousa.minhasfinancas.service.impl.SecurityUserDetailsService;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 	
-	private JwtService jwtService;
-	private SecurityUserDetailsService userDetailsService;
+	private final JwtService jwtService;
+	private final SecurityUserDetailsService userDetailsService;
 
 	public JwtTokenFilter(
 			JwtService jwtService,
@@ -37,31 +37,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			HttpServletResponse response, 
 			FilterChain filterChain)
 			throws ServletException, IOException {
-		
 		String authorization = request.getHeader("Authorization");
-		
-		//"Bearer","eyJhbGciOiJIUzUxMiJ9.eyJ..."
-		
 		if(authorization != null && authorization.startsWith("Bearer")) {
-			
 			String token = authorization.split(" ")[1];
 			boolean isTokenValid = jwtService.isTokenValido(token);
-			
 			if(isTokenValid) {
 				String login = jwtService.obterLoginUsuario(token);
 				UserDetails usuarioAutenticado = userDetailsService.loadUserByUsername(login);
-				
-				UsernamePasswordAuthenticationToken user = 
+				UsernamePasswordAuthenticationToken user =
 						new UsernamePasswordAuthenticationToken(
 								usuarioAutenticado, null, usuarioAutenticado.getAuthorities());
-				
 				user.setDetails( new WebAuthenticationDetailsSource().buildDetails(request) );
-				
 				SecurityContextHolder.getContext().setAuthentication(user);
-				
 			}
 		}
-		
 		filterChain.doFilter(request, response);
 	}
 

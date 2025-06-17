@@ -11,7 +11,7 @@ public enum StatusLancamento {
 
 	private final String descricao;
 
-	private StatusLancamento(String descricao) {
+	StatusLancamento(String descricao) {
 		this.descricao = descricao;
 	}
 

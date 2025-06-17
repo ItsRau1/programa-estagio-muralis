@@ -13,8 +13,8 @@ import com.dsousa.minhasfinancas.model.enums.TipoLancamento;
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 
 	@Query( value = 
-			  " select sum(l.valor) from Lancamento l join l.usuario u "
-			+ " where u.id = :idUsuario and l.tipo =:tipo and l.status = :status group by u " )
+			  "SELECT SUM(l.valor) FROM Lancamento l JOIN l.usuario u "
+			+ "WHERE u.id = :idUsuario AND l.tipo =:tipo AND l.status = :status GROUP BY u" )
 	BigDecimal obterSaldoPorTipoLancamentoEUsuarioEStatus(
 			@Param("idUsuario") Long idUsuario, 
 			@Param("tipo") TipoLancamento tipo,

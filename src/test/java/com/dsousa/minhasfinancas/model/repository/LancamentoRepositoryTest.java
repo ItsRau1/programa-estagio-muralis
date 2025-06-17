@@ -35,37 +35,27 @@ public class LancamentoRepositoryTest {
 	@Test
 	public void deveSalvarUmLancamento() {
 		Lancamento lancamento = criarLancamento();
-		
 		lancamento = repository.save(lancamento);
-		
 		assertThat(lancamento.getId()).isNotNull();
 	}
 
 	@Test
 	public void deveDeletarUmLancamento() {
 		Lancamento lancamento = criarEPersistirUmLancamento();
-		
 		lancamento = entityManager.find(Lancamento.class, lancamento.getId());
-		
 		repository.delete(lancamento);
-		
 		Lancamento lancamentoInexistente = entityManager.find(Lancamento.class, lancamento.getId());
 		assertThat(lancamentoInexistente).isNull();
 	}
 
-	
 	@Test
 	public void deveAtualizarUmLancamento() {
 		Lancamento lancamento = criarEPersistirUmLancamento();
-		
 		lancamento.setAno(2018);
 		lancamento.setDescricao("Teste Atualizar");
 		lancamento.setStatus(StatusLancamento.CANCELADO);
-		
 		repository.save(lancamento);
-		
 		Lancamento lancamentoAtualizado = entityManager.find(Lancamento.class, lancamento.getId());
-		
 		assertThat(lancamentoAtualizado.getAno()).isEqualTo(2018);
 		assertThat(lancamentoAtualizado.getDescricao()).isEqualTo("Teste Atualizar");
 		assertThat(lancamentoAtualizado.getStatus()).isEqualTo(StatusLancamento.CANCELADO);
@@ -74,9 +64,7 @@ public class LancamentoRepositoryTest {
 	@Test
 	public void deveBuscarUmLancamentoPorId() {
 		Lancamento lancamento = criarEPersistirUmLancamento();
-		
 		Optional<Lancamento> lancamentoEncontrado = repository.findById(lancamento.getId());
-		
 		assertThat(lancamentoEncontrado.isPresent()).isTrue();
 	}
 
@@ -97,9 +85,5 @@ public class LancamentoRepositoryTest {
 									.dataCadastro(LocalDate.now())
 									.build();
 	}
-	
-	
-	
-	
-	
+
 }

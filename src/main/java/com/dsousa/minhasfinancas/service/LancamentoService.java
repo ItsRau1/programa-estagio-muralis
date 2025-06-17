@@ -11,7 +11,7 @@ public interface LancamentoService {
 
 	Lancamento salvar(Lancamento lancamento);
 	
-	Lancamento atualizar(Lancamento lancamento);
+	void atualizar(Lancamento lancamento);
 	
 	void deletar(Lancamento lancamento);
 	
@@ -19,9 +19,8 @@ public interface LancamentoService {
 	
 	void atualizarStatus(Lancamento lancamento, StatusLancamento status);
 	
-	void validar(Lancamento lancamento);
-	
 	Optional<Lancamento> obterPorId(Long id);
 	
 	BigDecimal obterSaldoPorUsuario(Long id);
+
 }
