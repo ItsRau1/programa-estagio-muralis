@@ -1,17 +1,16 @@
 package com.dsousa.minhasfinancas.service.impl;
 
-import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.dsousa.minhasfinancas.exception.ErroAutenticacao;
 import com.dsousa.minhasfinancas.exception.RegraNegocioException;
 import com.dsousa.minhasfinancas.model.entity.Usuario;
 import com.dsousa.minhasfinancas.model.repository.UsuarioRepository;
 import com.dsousa.minhasfinancas.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

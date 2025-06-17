@@ -1,16 +1,18 @@
 package com.dsousa.minhasfinancas.api.resource;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
+import com.dsousa.minhasfinancas.api.dto.UsuarioDTO;
+import com.dsousa.minhasfinancas.exception.ErroAutenticacao;
+import com.dsousa.minhasfinancas.exception.RegraNegocioException;
+import com.dsousa.minhasfinancas.model.entity.Usuario;
 import com.dsousa.minhasfinancas.service.JwtService;
+import com.dsousa.minhasfinancas.service.LancamentoService;
+import com.dsousa.minhasfinancas.service.UsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -21,13 +23,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.dsousa.minhasfinancas.api.dto.UsuarioDTO;
-import com.dsousa.minhasfinancas.exception.ErroAutenticacao;
-import com.dsousa.minhasfinancas.exception.RegraNegocioException;
-import com.dsousa.minhasfinancas.model.entity.Usuario;
-import com.dsousa.minhasfinancas.service.LancamentoService;
-import com.dsousa.minhasfinancas.service.UsuarioService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)

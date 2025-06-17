@@ -1,8 +1,10 @@
 package com.dsousa.minhasfinancas.service;
 
-import java.util.Optional;
-
-import com.dsousa.minhasfinancas.MinhasfinancasApplication;
+import com.dsousa.minhasfinancas.exception.ErroAutenticacao;
+import com.dsousa.minhasfinancas.exception.RegraNegocioException;
+import com.dsousa.minhasfinancas.model.entity.Usuario;
+import com.dsousa.minhasfinancas.model.repository.UsuarioRepository;
+import com.dsousa.minhasfinancas.service.impl.UsuarioServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,15 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.dsousa.minhasfinancas.exception.ErroAutenticacao;
-import com.dsousa.minhasfinancas.exception.RegraNegocioException;
-import com.dsousa.minhasfinancas.model.entity.Usuario;
-import com.dsousa.minhasfinancas.model.repository.UsuarioRepository;
-import com.dsousa.minhasfinancas.service.impl.UsuarioServiceImpl;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

@@ -1,10 +1,9 @@
 package com.dsousa.minhasfinancas.model.repository;
 
-import java.util.Optional;
-
+import com.dsousa.minhasfinancas.model.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dsousa.minhasfinancas.model.entity.Usuario;
+import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	

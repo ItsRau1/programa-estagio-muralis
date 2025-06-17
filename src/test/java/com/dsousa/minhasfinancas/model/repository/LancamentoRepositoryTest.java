@@ -1,11 +1,8 @@
 package com.dsousa.minhasfinancas.model.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Optional;
-
+import com.dsousa.minhasfinancas.model.entity.Lancamento;
+import com.dsousa.minhasfinancas.model.enums.StatusLancamento;
+import com.dsousa.minhasfinancas.model.enums.TipoLancamento;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.dsousa.minhasfinancas.model.entity.Lancamento;
-import com.dsousa.minhasfinancas.model.enums.StatusLancamento;
-import com.dsousa.minhasfinancas.model.enums.TipoLancamento;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

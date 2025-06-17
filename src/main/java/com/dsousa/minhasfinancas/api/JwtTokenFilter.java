@@ -1,22 +1,18 @@
 package com.dsousa.minhasfinancas.api;
 
-import java.io.IOException;
+import com.dsousa.minhasfinancas.service.JwtService;
+import com.dsousa.minhasfinancas.service.impl.SecurityUserDetailsService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.dsousa.minhasfinancas.model.entity.Usuario;
-import com.dsousa.minhasfinancas.service.JwtService;
-import com.dsousa.minhasfinancas.service.impl.SecurityUserDetailsService;
+import java.io.IOException;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 	
