@@ -26,41 +26,37 @@ public class UsuarioResource {
 	private final LancamentoService lancamentoService;
 
 	private final JwtService jwtService;
-	
+
 	@PostMapping("/autenticar")
-	public ResponseEntity<?> autenticar( @RequestBody UsuarioDTO dto ) {
+	public ResponseEntity<?> autenticar(@RequestBody UsuarioDTO dto) {
 		try {
 			Usuario usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getSenha());
 			String token = jwtService.gerarToken(usuarioAutenticado);
 			return ResponseEntity.status(HttpStatus.OK).body(new TokenDTO(usuarioAutenticado.getNome(), token));
-		}catch (ErroAutenticacao e) {
+		}
+		catch (ErroAutenticacao e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> salvar( @RequestBody UsuarioDTO dto ) {
-		Usuario usuario = Usuario.builder()
-					.nome(dto.getNome())
-					.email(dto.getEmail())
-					.senha(dto.getSenha()).build();
+	public ResponseEntity<?> salvar(@RequestBody UsuarioDTO dto) {
+		Usuario usuario = Usuario.builder().nome(dto.getNome()).email(dto.getEmail()).senha(dto.getSenha()).build();
 		try {
 			Usuario usuarioSalvo = service.salvarUsuario(usuario);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
-		}catch (RegraNegocioException e) {
+		}
+		catch (RegraNegocioException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-		
 	}
-	
+
 	@GetMapping("/{id}/saldo")
-	public ResponseEntity<?> obterSaldo( @PathVariable("id") Long id ) {
+	public ResponseEntity<?> obterSaldo(@PathVariable("id") Long id) {
 		Optional<Usuario> usuario = service.obterPorId(id);
-		
-		if(!usuario.isPresent()) {
+		if (!usuario.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		
 		BigDecimal saldo = lancamentoService.obterSaldoPorUsuario(id);
 		return ResponseEntity.status(HttpStatus.OK).body(saldo);
 	}

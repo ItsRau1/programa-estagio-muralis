@@ -5,9 +5,7 @@ import lombok.Getter;
 @Getter
 public enum StatusLancamento {
 
-	PENDENTE("PENDENTE"),
-	CANCELADO("CANCELADO"),
-	EFETIVADO("EFETIVADO");
+	PENDENTE("PENDENTE"), CANCELADO("CANCELADO"), EFETIVADO("EFETIVADO");
 
 	private final String descricao;
 

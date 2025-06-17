@@ -19,13 +19,13 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class UsuarioRepositoryTest {
-	
+
 	@Autowired
 	UsuarioRepository repository;
-	
+
 	@Autowired
 	TestEntityManager entityManager;
-	
+
 	@Test
 	public void deveVerificarAExistenciaDeUmEmail() {
 		Usuario usuario = criarUsuario();
@@ -33,41 +33,36 @@ public class UsuarioRepositoryTest {
 		boolean result = repository.existsByEmail("usuario@email.com");
 		Assertions.assertThat(result).isTrue();
 	}
-	
+
 	@Test
 	public void deveRetornarFalsoQuandoNaoHouverUsuarioCadastradoComOEmail() {
 		boolean result = repository.existsByEmail("usuario@email.com");
 		Assertions.assertThat(result).isFalse();
 	}
-	
+
 	@Test
 	public void devePersistirUmUsuarioNaBaseDeDados() {
-		Usuario usuario =criarUsuario();
+		Usuario usuario = criarUsuario();
 		Usuario usuarioSalvo = repository.save(usuario);
 		Assertions.assertThat(usuarioSalvo.getId()).isNotNull();
 	}
-	
+
 	@Test
 	public void deveBuscarUmUsuarioPorEmail() {
 		Usuario usuario = criarUsuario();
 		entityManager.persist(usuario);
 		Optional<Usuario> result = repository.findByEmail("usuario@email.com");
-		Assertions.assertThat( result.isPresent() ).isTrue();
+		Assertions.assertThat(result.isPresent()).isTrue();
 	}
-	
+
 	@Test
 	public void deveRetornarVazioAoBuscarUsuarioPorEmailQuandoNaoExisteNaBase() {
 		Optional<Usuario> result = repository.findByEmail("usuario@email.com");
-		Assertions.assertThat( result.isPresent() ).isFalse();
+		Assertions.assertThat(result.isPresent()).isFalse();
 	}
-	
+
 	public static Usuario criarUsuario() {
-		return Usuario
-				.builder()
-				.nome("usuario")
-				.email("usuario@email.com")
-				.senha("senha")
-				.build();
+		return Usuario.builder().nome("usuario").email("usuario@email.com").senha("senha").build();
 	}
 
 }

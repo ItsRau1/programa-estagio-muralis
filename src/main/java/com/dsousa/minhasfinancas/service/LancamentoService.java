@@ -10,17 +10,17 @@ import java.util.Optional;
 public interface LancamentoService {
 
 	Lancamento salvar(Lancamento lancamento);
-	
+
 	void atualizar(Lancamento lancamento);
-	
+
 	void deletar(Lancamento lancamento);
-	
-	List<Lancamento> buscar( Lancamento lancamentoFiltro );
-	
+
+	List<Lancamento> buscar(Lancamento lancamentoFiltro);
+
 	void atualizarStatus(Lancamento lancamento, StatusLancamento status);
-	
+
 	Optional<Lancamento> obterPorId(Long id);
-	
+
 	BigDecimal obterSaldoPorUsuario(Long id);
 
 }

@@ -17,10 +17,10 @@ import java.util.Date;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-	
+
 	@Value("${jwt.expiracao::2400}")
 	private String expiracao;
-	
+
 	@Value("${jwt.chave-assinatura::test}")
 	private String chaveAssinatura;
 
@@ -28,28 +28,22 @@ public class JwtServiceImpl implements JwtService {
 	public String gerarToken(Usuario usuario) {
 		long exp = Long.valueOf(expiracao);
 		LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
-		Instant instant = dataHoraExpiracao.atZone( ZoneId.systemDefault() ).toInstant();
+		Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
 		java.util.Date data = Date.from(instant);
-		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime()
-				.format(DateTimeFormatter.ofPattern("HH:mm"));
-        return Jwts
-                            .builder()
-                            .setExpiration(data)
-                            .setSubject(usuario.getEmail())
-                            .claim("userid", usuario.getId())
-                            .claim("nome", usuario.getNome())
-                            .claim("horaExpiracao", horaExpiracaoToken)
-                            .signWith( SignatureAlgorithm.HS512 , chaveAssinatura )
-                            .compact();
+		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+		return Jwts.builder()
+			.setExpiration(data)
+			.setSubject(usuario.getEmail())
+			.claim("userid", usuario.getId())
+			.claim("nome", usuario.getNome())
+			.claim("horaExpiracao", horaExpiracaoToken)
+			.signWith(SignatureAlgorithm.HS512, chaveAssinatura)
+			.compact();
 	}
 
 	@Override
 	public Claims obterClaims(String token) throws ExpiredJwtException {
-		return Jwts
-				.parser()
-				.setSigningKey(chaveAssinatura)
-				.parseClaimsJws(token)
-				.getBody();
+		return Jwts.parser().setSigningKey(chaveAssinatura).parseClaimsJws(token).getBody();
 	}
 
 	@Override
@@ -57,11 +51,11 @@ public class JwtServiceImpl implements JwtService {
 		try {
 			Claims claims = obterClaims(token);
 			java.util.Date dataEx = claims.getExpiration();
-			LocalDateTime dataExpiracao = dataEx.toInstant()
-					.atZone(ZoneId.systemDefault()).toLocalDateTime();
+			LocalDateTime dataExpiracao = dataEx.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			boolean dataHoraAtualIsAfterDataExpiracao = LocalDateTime.now().isAfter(dataExpiracao);
 			return !dataHoraAtualIsAfterDataExpiracao;
-		}catch(ExpiredJwtException e) {
+		}
+		catch (ExpiredJwtException e) {
 			return false;
 		}
 	}

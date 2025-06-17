@@ -15,35 +15,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
-	
+
 	private final JwtService jwtService;
+
 	private final SecurityUserDetailsService userDetailsService;
 
-	public JwtTokenFilter(
-			JwtService jwtService,
-			SecurityUserDetailsService userDetailsService
-			) {
+	public JwtTokenFilter(JwtService jwtService, SecurityUserDetailsService userDetailsService) {
 		this.jwtService = jwtService;
 		this.userDetailsService = userDetailsService;
 	}
 
 	@Override
-	protected void doFilterInternal(
-			HttpServletRequest request, 
-			HttpServletResponse response, 
-			FilterChain filterChain)
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String authorization = request.getHeader("Authorization");
-		if(authorization != null && authorization.startsWith("Bearer")) {
+		if (authorization != null && authorization.startsWith("Bearer")) {
 			String token = authorization.split(" ")[1];
 			boolean isTokenValid = jwtService.isTokenValido(token);
-			if(isTokenValid) {
+			if (isTokenValid) {
 				String login = jwtService.obterLoginUsuario(token);
 				UserDetails usuarioAutenticado = userDetailsService.loadUserByUsername(login);
-				UsernamePasswordAuthenticationToken user =
-						new UsernamePasswordAuthenticationToken(
-								usuarioAutenticado, null, usuarioAutenticado.getAuthorities());
-				user.setDetails( new WebAuthenticationDetailsSource().buildDetails(request) );
+				UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(usuarioAutenticado,
+						null, usuarioAutenticado.getAuthorities());
+				user.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(user);
 			}
 		}

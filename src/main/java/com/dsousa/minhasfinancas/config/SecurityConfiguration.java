@@ -26,18 +26,18 @@ import java.util.List;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private SecurityUserDetailsService userDetailsService;
 
 	@Autowired
 	private JwtService jwtService;
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public JwtTokenFilter jwtTokenFilter() {
 		return new JwtTokenFilter(jwtService, userDetailsService);
@@ -45,29 +45,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.userDetailsService(userDetailsService)
-			.passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.csrf().disable()
+		http.csrf()
+			.disable()
 			.authorizeRequests()
-				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-				.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/usuarios/autenticar").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
-				.anyRequest().authenticated()	
-		.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-			.addFilterBefore( jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
+			.requestMatchers(CorsUtils::isPreFlightRequest)
+			.permitAll()
+			.antMatchers(HttpMethod.GET, "/actuator/**")
+			.permitAll()
+			.antMatchers(HttpMethod.POST, "/api/usuarios/autenticar")
+			.permitAll()
+			.antMatchers(HttpMethod.POST, "/api/usuarios")
+			.permitAll()
+			.anyRequest()
+			.authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
-	
+
 	@Bean
-	public FilterRegistrationBean<CorsFilter> corsFilter(){
+	public FilterRegistrationBean<CorsFilter> corsFilter() {
 		List<String> all = Collections.singletonList("*");
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedMethods(all);
@@ -77,8 +81,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		CorsFilter corFilter = new CorsFilter(source);
-		FilterRegistrationBean<CorsFilter> filter =
-				new FilterRegistrationBean<CorsFilter>(corFilter);
+		FilterRegistrationBean<CorsFilter> filter = new FilterRegistrationBean<CorsFilter>(corFilter);
 		filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return filter;
 	}

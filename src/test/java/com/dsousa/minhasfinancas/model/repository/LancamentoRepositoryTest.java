@@ -27,10 +27,10 @@ public class LancamentoRepositoryTest {
 
 	@Autowired
 	LancamentoRepository repository;
-	
+
 	@Autowired
 	TestEntityManager entityManager;
-	
+
 	@Test
 	public void deveSalvarUmLancamento() {
 		Lancamento lancamento = criarLancamento();
@@ -59,7 +59,7 @@ public class LancamentoRepositoryTest {
 		assertThat(lancamentoAtualizado.getDescricao()).isEqualTo("Teste Atualizar");
 		assertThat(lancamentoAtualizado.getStatus()).isEqualTo(StatusLancamento.CANCELADO);
 	}
-	
+
 	@Test
 	public void deveBuscarUmLancamentoPorId() {
 		Lancamento lancamento = criarEPersistirUmLancamento();
@@ -72,17 +72,17 @@ public class LancamentoRepositoryTest {
 		entityManager.persist(lancamento);
 		return lancamento;
 	}
-	
+
 	public static Lancamento criarLancamento() {
 		return Lancamento.builder()
-									.ano(2019)
-									.mes(1)
-									.descricao("lancamento qualquer")
-									.valor(BigDecimal.valueOf(10))
-									.tipo(TipoLancamento.RECEITA)
-									.status(StatusLancamento.PENDENTE)
-									.dataCadastro(LocalDate.now())
-									.build();
+			.ano(2019)
+			.mes(1)
+			.descricao("lancamento qualquer")
+			.valor(BigDecimal.valueOf(10))
+			.tipo(TipoLancamento.RECEITA)
+			.status(StatusLancamento.PENDENTE)
+			.dataCadastro(LocalDate.now())
+			.build();
 	}
 
 }

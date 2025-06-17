@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
-	
+
 	private final UsuarioRepository repository;
 
 	private final PasswordEncoder encoder;
@@ -23,7 +23,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Usuario autenticar(String email, String senha) {
 		Usuario usuario = repository.findByEmail(email)
-				.orElseThrow(() -> new ErroAutenticacao("Usuário não encontrado para o email informado."));
+			.orElseThrow(() -> new ErroAutenticacao("Usuário não encontrado para o email informado."));
 		this.validarSenha(senha, usuario.getSenha());
 		return usuario;
 	}
@@ -42,13 +42,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	private void validarEmail(String email) {
-		if(repository.existsByEmail(email)) {
+		if (repository.existsByEmail(email)) {
 			throw new RegraNegocioException("Já existe um usuário cadastrado com este email.");
 		}
 	}
 
 	private void validarSenha(String senhaEnviada, String senhaUsuario) {
-		if(!encoder.matches(senhaEnviada, senhaUsuario)) {
+		if (!encoder.matches(senhaEnviada, senhaUsuario)) {
 			throw new ErroAutenticacao("Senha inválida.");
 		}
 	}
