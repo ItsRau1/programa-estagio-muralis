@@ -28,7 +28,6 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class UsuarioResourceTest {
 

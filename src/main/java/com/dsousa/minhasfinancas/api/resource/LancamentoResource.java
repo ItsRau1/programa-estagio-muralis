@@ -2,6 +2,7 @@ package com.dsousa.minhasfinancas.api.resource;
 
 import com.dsousa.minhasfinancas.api.dto.AtualizaStatusDTO;
 import com.dsousa.minhasfinancas.api.dto.LancamentoDTO;
+import com.dsousa.minhasfinancas.api.dto.LancamentoCsvResponseDTO;
 import com.dsousa.minhasfinancas.exception.RegraNegocioException;
 import com.dsousa.minhasfinancas.model.entity.Lancamento;
 import com.dsousa.minhasfinancas.model.entity.Usuario;
@@ -9,11 +10,13 @@ import com.dsousa.minhasfinancas.model.enums.StatusLancamento;
 import com.dsousa.minhasfinancas.model.enums.TipoLancamento;
 import com.dsousa.minhasfinancas.service.LancamentoService;
 import com.dsousa.minhasfinancas.service.UsuarioService;
+import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -58,6 +61,30 @@ public class LancamentoResource {
 		}
 		catch (RegraNegocioException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+
+	@PostMapping("/upload-csv")
+	public ResponseEntity<?> uploadCsv(
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("usuario") Long usuarioId) {
+		
+		if (file == null || file.isEmpty()) {
+			return ResponseEntity.badRequest().body("Por favor, envie um arquivo.");
+		}
+
+		if (!Objects.requireNonNull(file.getOriginalFilename()).toLowerCase().endsWith(".csv")) {
+			return ResponseEntity.badRequest().body("Por favor, envie um arquivo CSV.");
+		}
+
+		try {
+			LancamentoCsvResponseDTO resultado = service.processarCsv(file, usuarioId);
+			return ResponseEntity.ok(resultado);
+		} catch (RegraNegocioException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body("Ocorreu um erro ao processar o arquivo: " + e.getMessage());
 		}
 	}
 
